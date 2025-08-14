@@ -98,15 +98,17 @@ function PreferencesForm() {
         <>
             {!isOpen && (
 
-                <div className="border-2 border-gray-300 rounded-lg p-4 bg-white text-gray-800 shadow-lg">
+                <div className="border-2 border-gray-300 rounded-lg p-4 bg-white text-gray-800 shadow-lg select-none">
                     <form onSubmit={submitonClick}>
-                        <div>
+                        <div className="p-5 ">
                             <h1>สำรวจความชอบภาพยนตร์</h1>
                         </div>
 
                         {/* username */}
                         <div className="p-4">
-                            <label className="flex items-center mb-3 font-bold">
+                            <label
+                                htmlFor={preferData.username}
+                                className="flex items-center mb-3 font-bold ">
                                 ชื่อ-นามสกุล
                                 <span className="text-red-500 ml-1">*</span>
                             </label>
@@ -117,14 +119,16 @@ function PreferencesForm() {
                                 placeholder="กรุณากรอก ชื่อ-นามสกุล"
                                 value={preferData.username}
                                 onChange={handleInputonChange}
-                                className="w-full border-2 border-gray-300 rounded-md p-3 focus:border-blue-500 focus:outline-none"
+                                className="w-full border-2 border-gray-300 rounded-md p-3 focus:border-blue-500 focus:outline-none "
                             ></input>
                             {error.username && <p className="flex items-center text-red-500">{error.username}</p>}
                         </div>
 
                         {/* E-mail */}
                         <div className="p-4">
-                            <label className="flex items-center mb-3 font-bold">
+                            <label
+                                htmlFor={preferData.email}
+                                className="flex items-center mb-3 font-bold">
                                 E-mail
                                 <span className="text-red-500 ml-1">*</span>
                             </label>
@@ -159,7 +163,7 @@ function PreferencesForm() {
                                             }
                                             onChange={handleRadioonChange}
                                         ></input>
-                                        <label className="ml-2">
+                                        <label htmlFor={item.title} className="ml-2">
                                             {item.title} ({item.year}) - {item.director}
                                         </label>
                                     </div>
@@ -170,7 +174,9 @@ function PreferencesForm() {
 
                         {/* review */}
                         <div className="p-4">
-                            <label className="flex items-center mb-3 font-bold">
+                            <label
+                                htmlFor={preferData.review}
+                                className="flex items-center mb-3 font-bold">
                                 ความคิดเห็นเพิ่มเติม
                             </label>
                             <textarea
