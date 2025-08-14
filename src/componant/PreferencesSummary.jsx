@@ -25,7 +25,7 @@ function PreferencesSummary
             <div className="p-4">
                 <label>ภาพยนตร์ที่ชอบ</label>
                 <br />
-                <label> {!movie?.title ? "" : `${movie?.title} (${movie?.year}) (${movie?.director})`}</label>
+                <label> {!movie?.title ? "" : `${movie?.title} (${movie?.year}) - ${movie?.director}`}</label>
             </div>
 
             <div className="p-4">

@@ -14,6 +14,16 @@ function PreferencesForm() {
         review: "",
     })
     const [isOpen, setIsOpen] = useState(false);
+    const [error, setError] = useState({
+        name: "",
+        image: "",
+        price: "",
+        description: "",
+        email: "",
+    })
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
 
     function handleInputonChange(e) {
         const { name, value } = e.target;
@@ -40,6 +50,7 @@ function PreferencesForm() {
         resetForm();
         // console.log("reset : ", isOpen)
     }
+
     function resetForm() {
         setpreferData({
             username: "",
@@ -51,13 +62,34 @@ function PreferencesForm() {
             },
             review: "",
         })
+        setError({});
     }
 
     function submitonClick(e) {
         e.preventDefault();
-        setIsOpen(true); // เปิด popup
+        let err = {}
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        // console.log("submit : ", isOpen)
+        if (!preferData.username.trim()) {
+            err.username = "โปรดใส่ชื่อของคุณ.";
+        }
+
+        if (!preferData.email.trim()) {
+            err.email = "โปรดใส่อีเมลของคุณ";
+        } else if (!emailRegex.test(preferData.email)) {
+            err.email = "รูปแบบอีเมลไม่ถูกต้อง";
+        }
+
+        console.log(preferData.movie?.title)
+        if (!preferData.movie?.title) {
+            err.movie = "กรุณาเลือกหนังที่คุณชอบ";
+        }
+
+        setError(err);
+
+        if (Object.keys(err).length == 0) {
+            setIsOpen(true);
+        }
     }
 
     // console.log("isOpen : ", isOpen)
@@ -66,7 +98,7 @@ function PreferencesForm() {
         <>
             {!isOpen && (
 
-                <div>
+                <div className="border-2 border-gray-300 rounded-lg p-4 bg-white text-gray-800 shadow-lg">
                     <form onSubmit={submitonClick}>
                         <div>
                             <h1>สำรวจความชอบภาพยนตร์</h1>
@@ -74,7 +106,10 @@ function PreferencesForm() {
 
                         {/* username */}
                         <div className="p-4">
-                            <label>ชื่อ-นามสกุล</label>
+                            <label className="flex items-center mb-3 font-bold">
+                                ชื่อ-นามสกุล
+                                <span className="text-red-500 ml-1">*</span>
+                            </label>
                             <input
                                 type="text"
                                 id="username"
@@ -82,12 +117,17 @@ function PreferencesForm() {
                                 placeholder="กรุณากรอก ชื่อ-นามสกุล"
                                 value={preferData.username}
                                 onChange={handleInputonChange}
+                                className="w-full border-2 border-gray-300 rounded-md p-3 focus:border-blue-500 focus:outline-none"
                             ></input>
+                            {error.username && <p className="flex items-center text-red-500">{error.username}</p>}
                         </div>
 
                         {/* E-mail */}
                         <div className="p-4">
-                            <label>E-mail</label>
+                            <label className="flex items-center mb-3 font-bold">
+                                E-mail
+                                <span className="text-red-500 ml-1">*</span>
+                            </label>
                             <input
                                 type="text"
                                 id="email"
@@ -95,15 +135,20 @@ function PreferencesForm() {
                                 placeholder="กรุณากรอก E-mail"
                                 value={preferData.email}
                                 onChange={handleInputonChange}
+                                className="w-full border-2 border-gray-300 rounded-md p-3 focus:border-blue-500 focus:outline-none"
                             ></input>
+                            {error.email && <p className="flex items-center text-red-500">{error.email}</p>}
                         </div>
 
                         {/* movie */}
                         <div className="p-4">
-                            <label>ภาพยนตร์ที่ชอบ</label>
+                            <label className="flex items-center mb-3 font-bold">
+                                ภาพยนตร์ที่ชอบ
+                                <span className="text-red-500 ml-1">*</span>
+                            </label>
                             {
                                 movies.map((item) =>
-                                    <div key={item.title}>
+                                    <div key={item.title} className="flex items-center mb-2">
                                         <input
                                             type="radio"
                                             id={item.title}
@@ -114,15 +159,20 @@ function PreferencesForm() {
                                             }
                                             onChange={handleRadioonChange}
                                         ></input>
-                                        {item.title}({item.year})({item.director})
+                                        <label className="ml-2">
+                                            {item.title} ({item.year}) - {item.director}
+                                        </label>
                                     </div>
                                 )
                             }
+                            {error.movie && <p className="flex items-center text-red-500">{error.movie}</p>}
                         </div>
 
                         {/* review */}
                         <div className="p-4">
-                            <label>ความคิดเห็นเพิ่มเติม</label>
+                            <label className="flex items-center mb-3 font-bold">
+                                ความคิดเห็นเพิ่มเติม
+                            </label>
                             <textarea
                                 id="review"
                                 name="review"
@@ -131,13 +181,22 @@ function PreferencesForm() {
                                 placeholder="พิมพ์ความคิดเห็นของคุณที่นี่..."
                                 value={preferData.review}
                                 onChange={handleInputonChange}
+                                className="w-full border-2 border-gray-300 rounded-md p-3 focus:border-blue-500 focus:outline-none"
                             ></textarea>
                         </div>
 
                         {/* button */}
-                        <div className="p-4">
-                            <button onClick={resetonClick}>Reset</button>
-                            <button type="submit">Submit</button>
+                        <div className="p-4 flex justify-end gap-1">
+                            <button
+                                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+                                onClick={resetonClick}>
+                                Reset
+                            </button>
+                            <button
+                                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+                                type="submit">
+                                Submit
+                            </button>
                         </div>
                     </form >
                 </div >)
