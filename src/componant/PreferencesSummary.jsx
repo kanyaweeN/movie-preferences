@@ -1,9 +1,6 @@
 function PreferencesSummary
-    (props)
-// (username, email, movie, review, onClose) 
-{
+    (props) {
     const { username, email, movie, review, onConfirm, onClose } = props
-    // console.log("Summary ", movie)
     return (
         <div className="border-2 border-gray-300 rounded-lg p-4 bg-white text-gray-800 shadow-lg select-none">
             <div className="p-5">
