@@ -21,13 +21,9 @@ function PreferencesForm() {
         description: "",
         email: "",
     })
-    function isValidEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
 
     function handleInputonChange(e) {
         const { name, value } = e.target;
-        // console.log("Inputon : ", name, "=", value)
         setpreferData({
             ...preferData,
             [name]: value,
@@ -35,9 +31,6 @@ function PreferencesForm() {
     }
 
     function handleRadioonChange(e) {
-        // const { name, value } = e.target;
-        // console.log("Radio : ", JSON.stringify(preferData, null, 2));
-        // const { key, value } = obj;
         setpreferData({
             ...preferData,
             movie: JSON.parse(e.target.value)
@@ -46,9 +39,7 @@ function PreferencesForm() {
 
     function resetonClick(e) {
         e.preventDefault()
-        // console.log(JSON.stringify(preferData, null, 2))
         resetForm();
-        // console.log("reset : ", isOpen)
     }
 
     function resetForm() {
@@ -92,8 +83,6 @@ function PreferencesForm() {
         }
     }
 
-    // console.log("isOpen : ", isOpen)
-    // console.log("main : ", JSON.stringify(preferData, null, 2));
     return (
         <>
             {!isOpen && (
